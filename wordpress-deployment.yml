@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress
-  namespace: default
+  namespace: default   
 spec:
   replicas: 1
   selector:
@@ -18,8 +18,27 @@ spec:
         image: vishnu6381/wordpress:latest
         ports:
         - containerPort: 80
+
         env:
         - name: WORDPRESS_DB_HOST
-          value: mysql
+          valueFrom:
+            configMapKeyRef:
+              name: wordpress-config
+              key: WORDPRESS_DB_HOST
+
+        - name: WORDPRESS_DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: wordpress-config
+              key: WORDPRESS_DB_NAME
+        - name: WORDPRESS_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_USER
+
         - name: WORDPRESS_DB_PASSWORD
-          value: root123
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_PASSWORD
