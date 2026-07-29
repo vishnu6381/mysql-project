@@ -20,7 +20,7 @@ spec:
             - containerPort: 80
           env:
             - name: WORDPRESS_DB_HOST
-              value: mysql-service
+              value: mysql
 
             - name: WORDPRESS_DB_NAME
               value: wordpress
